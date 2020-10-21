@@ -1,0 +1,18 @@
+name: DiscordChatSynchronization
+version: 1.0
+main: com.slender.Main
+authors: [ Slender ]
+description: test
+commands:
+  dreload:
+    description: Eklentiyi Yeniler
+    aliases:
+      - screload
+    usage: /<command>
+  yetkilisohbet:
+    description: Yetkili Sohbet Komutu
+    aliases:
+      - sc
+      - staffchat
+    usage: /<command>
+

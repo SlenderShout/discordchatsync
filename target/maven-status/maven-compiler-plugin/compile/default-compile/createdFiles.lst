@@ -1,0 +1,6 @@
+commands\StaffChat.class
+commands\Reload.class
+listener\BukkitListener.class
+com\slender\Main.class
+listener\DiscordListener.class
+util\ColorUtil.class
