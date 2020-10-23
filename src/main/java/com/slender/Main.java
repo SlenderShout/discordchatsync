@@ -52,15 +52,16 @@ public final class Main extends JavaPlugin {
         colorList();
         config.createSection("Colors", colors);
         saveConfig();
-        discordConfig.options().header("#Discord Botu ile alakalı tüm ayarların bulunduğu yml dosyası");
+        discordConfig.options().header("Discord Botu ile alakalı tüm ayarların bulunduğu yml dosyası");
         discordConfig.addDefault("Discord.Bot.Token", "");
         discordConfig.addDefault("Discord.Bot.StaffChatId", "");
         discordConfig.addDefault("Discord.Bot.ChatId", "");
         discordConfig.options().copyDefaults(true);
         saveCustomYml(discordConfig, discordyml);
         msgconfig.options().copyDefaults(true);
-        msgconfig.options().header("#Mesajların bulunduğu dosya");
-        msgconfig.addDefault("Messages.sendMessageToDiscord", "(%date) **%name**: %message");
+        msgconfig.options().header("Mesajların bulunduğu dosya");
+        msgconfig.addDefault("Messages.staffChatToDiscord", "(%date%) **%name%**: %message%");
+        msgconfig.addDefault("Messages.sendMessageToDiscord", "(%date%) **%name%**: %message%");
         saveCustomYml(msgconfig, msgyml);
     }
     @Override
@@ -188,22 +189,24 @@ public final class Main extends JavaPlugin {
     }
 
     public void staffChatToDiscord(Player player, String message) {
-        if (message.startsWith("@")) return;
         String p = player.getDisplayName();
-        jda.getTextChannelById(staffChannelId).sendMessage("Yetkili › **"+p+ "** **› ** " + message).queue();
+        SimpleDateFormat format = new SimpleDateFormat(getConfig().getString("DateFormat"));
+        String text = getConfig().getString("Messages.staffChatToDiscord");
+        text = text.replaceAll("%date%", String.valueOf(format));
+        text =text.replaceAll("%name%", p);
+        text= text.replaceAll("%message%", message);
+        jda.getTextChannelById(staffChannelId).sendMessage(text).queue();
     }
 
 
 
     public void sendMessageToDiscord(Player player, String message) {
-        Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat(getConfig().getString("DateFormat"));
-        if (message.startsWith("@")) return;
         String p = player.getDisplayName();
         String text = getConfig().getString("Messages.sendMessageToDiscord");
-        text = text.replaceAll("%date", String.valueOf(format));
-        text =text.replaceAll("%name", p);
-        text= text.replaceAll("%message", message);
+        text = text.replaceAll("%date%", String.valueOf(format));
+        text =text.replaceAll("%name%", p);
+        text= text.replaceAll("%message%", message);
         jda.getTextChannelById(channelId).sendMessage(text).queue();
     }
 
